@@ -2,6 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+<<<<<<< HEAD
 import UserManagementPage from './pages/UserManagementPage';
 import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
@@ -22,6 +23,18 @@ function App() {
         <Route path="*" element={<div className="text-center p-10">404 Not Found</div>} />
       </Routes>
     </div>
+=======
+import DashboardPage from './pages/DashboardPage';
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<div className="text-center p-10">404 Not Found</div>} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+    </Routes>
+>>>>>>> f886b5692b968ca5d035b54379cfd434d3f9c401
   );
 }
 
