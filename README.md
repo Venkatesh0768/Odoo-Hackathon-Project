@@ -61,11 +61,12 @@ echo "GEMINI_API_KEY=your_gemini_api_key" > .env.local
 
 # 3. Run the app
 npm run dev
+```
 
 
 
-
-🖥️ Backend Setup
+### 🖥️ Backend Setup
+```bash
 Install MySQL and create a new database (e.g., skill_swap_db).
 
 Update the following in application.properties:
