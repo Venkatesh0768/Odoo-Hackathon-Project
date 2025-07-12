@@ -2,6 +2,7 @@ package com.example.odooproject_Backend.controller;
 
 import com.example.odooproject_Backend.dto.LoginRequestDTO;
 import com.example.odooproject_Backend.dto.PaginatedResponse;
+import com.example.odooproject_Backend.dto.UpdateUserDTO;
 import org.springframework.data.domain.Page;
 
 import com.example.odooproject_Backend.dto.UserDTO;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @CrossOrigin(
-        origins = "http://localhost:5174",
+        origins = "http://localhost:5173",
         allowCredentials = "true",
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
 )
@@ -39,6 +40,16 @@ public class UserController {
         return userService.getUserDTOById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UpdateUserDTO updateUserDTO) {
+        try {
+            UserDTO updatedUser = userService.updateUser(id, updateUserDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping

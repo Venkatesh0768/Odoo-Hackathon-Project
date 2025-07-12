@@ -1,10 +1,13 @@
 package com.example.odooproject_Backend.services;
 
 import com.example.odooproject_Backend.dto.LoginResponseDTO;
+import com.example.odooproject_Backend.dto.UpdateUserDTO;
 import com.example.odooproject_Backend.dto.UserDTO;
 import com.example.odooproject_Backend.models.User;
+import com.example.odooproject_Backend.repository.SkillRepository;
 import com.example.odooproject_Backend.repository.UserRepository;
 import org.hibernate.query.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,10 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
+
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -76,6 +83,9 @@ public class UserService {
         ));
     }
 
+
+
+
     public List<UserDTO> searchUsers(String skill, int page, int size) {
         List<User> users;
         if (skill != null && !skill.isEmpty()) {
@@ -94,9 +104,25 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-
-    
-
+    public UserDTO updateUser(Long userId, UpdateUserDTO updateUserDTO) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        
+        // Update only the allowed fields
+        if (updateUserDTO.getName() != null) {
+            user.setName(updateUserDTO.getName());
+        }
+        if (updateUserDTO.getLocation() != null) {
+            user.setLocation(updateUserDTO.getLocation());
+        }
+        if (updateUserDTO.getProfilePhoto() != null) {
+            user.setProfilePhoto(updateUserDTO.getProfilePhoto());
+        }
+        user.setPublic(updateUserDTO.isPublic());
+        
+        User updatedUser = userRepository.save(user);
+        return convertToDTO(updatedUser);
+    }
 
     public UserDTO convertToDTO(User user) {
         return new UserDTO(

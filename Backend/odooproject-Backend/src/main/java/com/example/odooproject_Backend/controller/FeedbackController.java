@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/feedbacks")
+@RequestMapping("/api/v1/feedbacks")
 @RequiredArgsConstructor
 @CrossOrigin(
-        origins = "http://localhost:5174",
+        origins = "http://localhost:5173",
         allowCredentials = "true"
 )
 public class FeedbackController {

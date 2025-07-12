@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/admin/logs")
 @RequiredArgsConstructor
 @CrossOrigin(
-        origins = "http://localhost:5174",
+        origins = "http://localhost:5173",
 
         allowCredentials = "true"
 )

@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/skills")
 @CrossOrigin(
-        origins = "http://localhost:5174",
+        origins = "http://localhost:5173",
         allowCredentials = "true"
 )
 public class SkillController {
