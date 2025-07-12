@@ -4,10 +4,13 @@ import com.example.odooproject_Backend.dto.LoginResponseDTO;
 import com.example.odooproject_Backend.dto.UserDTO;
 import com.example.odooproject_Backend.models.User;
 import com.example.odooproject_Backend.repository.UserRepository;
+import org.hibernate.query.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -73,6 +76,26 @@ public class UserService {
         ));
     }
 
+    public List<UserDTO> searchUsers(String skill, int page, int size) {
+        List<User> users;
+        if (skill != null && !skill.isEmpty()) {
+            users = userRepository.findAll().stream()
+                    .filter(u -> u.getSkills() != null && u.getSkills().stream()
+                            .anyMatch(s -> s.getSkillName().equalsIgnoreCase(skill)))
+                    .collect(Collectors.toList());
+        } else {
+            users = userRepository.findAll();
+        }
+        // Pagination (simple, for demo)
+        int fromIndex = Math.min(page * size, users.size());
+        int toIndex = Math.min(fromIndex + size, users.size());
+        return users.subList(fromIndex, toIndex).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    
 
 
     public UserDTO convertToDTO(User user) {

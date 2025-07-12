@@ -16,3 +16,11 @@ API.interceptors.request.use((config) => {
 // Auth API
 export const login = (data) => API.post('/auth/login', data);
 export const register = (data) => API.post('/users/register', data);
+
+// User Management API
+export const getAllUsers = () => API.get('/users');
+export const getUserById = (id) => API.get(`/users/${id}`);
+export const banUser = (id) => API.put(`/users/${id}/ban`);
+export const unbanUser = (id) => API.put(`/users/${id}/unban`);
+export const deleteUser = (id) => API.delete(`/users/${id}`);
+export const loginUser = (data) => API.post('/users/login', data);

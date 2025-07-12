@@ -1,21 +1,24 @@
 package com.example.odooproject_Backend.controller;
 
 import com.example.odooproject_Backend.dto.LoginRequestDTO;
-import com.example.odooproject_Backend.dto.LoginResponseDTO;
+import com.example.odooproject_Backend.dto.PaginatedResponse;
+import org.springframework.data.domain.Page;
+
 import com.example.odooproject_Backend.dto.UserDTO;
 import com.example.odooproject_Backend.models.User;
 import com.example.odooproject_Backend.services.UserService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @CrossOrigin(
         origins = "http://localhost:5174",
-        allowCredentials = "true"
+        allowCredentials = "true",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
 )
 public class UserController {
 
@@ -65,5 +68,19 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO loginRequest) {
         return userService.loginUserByEmail(loginRequest.getEmail(), loginRequest.getPassword());
     }
+
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> searchUsers(
+            @RequestParam(required = false) String skill,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        // You need to implement the search logic in your UserService
+        List<UserDTO> users = userService.searchUsers(skill, page, size);
+        return ResponseEntity.ok(users);
+    }
+
 
 }

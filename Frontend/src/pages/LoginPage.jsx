@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Users, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
-import { login } from '../services/api';
+import { loginUser } from '../services/api';
 import './LoginPage.css';
 
 
@@ -59,23 +59,30 @@ const Login = () => {
       return;
     }
 
-    // Real login
+    // Real login using the correct endpoint
     try {
-      const { data } = await login(formData);
+      const response = await loginUser(formData);
+      
+      // Handle the response based on your backend structure
+      if (response.data) {
+        // Store user data and token
+        localStorage.setItem('token', response.data.token || 'demo-token');
+        localStorage.setItem('user', JSON.stringify(response.data.user || response.data));
+        
+        toast({
+          title: "Welcome back!",
+          description: `Logged in as ${response.data.user?.name || response.data.name || 'User'}`,
+        });
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      toast({
-        title: "Welcome back!",
-        description: `Logged in as ${data.user.name}`,
-      });
-
-      navigate('/dashboard');
+        navigate('/dashboard');
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: "Login failed",
-        description: "Invalid credentials or server error.",
+        description: error.response?.data?.message || "Invalid credentials or server error.",
         variant: "destructive"
       });
     } finally {
@@ -100,7 +107,7 @@ return (
             <Users />
           </div>
           <div className="card-title">Welcome Back</div>
-          <div className="card-description">Sign in to your SkillSwap account</div>
+          <div className="card-description">Sign in to your Odoo Project account</div>
         </div>
 
         <div className="demo-box">
