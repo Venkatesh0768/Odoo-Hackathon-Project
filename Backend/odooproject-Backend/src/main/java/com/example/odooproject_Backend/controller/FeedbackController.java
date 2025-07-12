@@ -11,7 +11,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/feedbacks")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(
+        origins = "http://localhost:5174",
+        allowCredentials = "true"
+)
 public class FeedbackController {
 
     private final FeedbackService feedbackService;

@@ -11,7 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin/logs")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(
+        origins = "http://localhost:5174",
+        allowCredentials = "true"
+)
 public class AdminLogController {
 
     private final AdminLogService adminLogService;

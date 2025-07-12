@@ -10,7 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/skills")
-@CrossOrigin
+@CrossOrigin(
+        origins = "http://localhost:5174",
+        allowCredentials = "true"
+)
 public class SkillController {
 
     private final SkillService skillService;

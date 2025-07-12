@@ -13,7 +13,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin
+@CrossOrigin(
+        origins = "http://localhost:5174",
+        allowCredentials = "true"
+)
 public class UserController {
 
     private final UserService userService;
@@ -62,7 +65,5 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO loginRequest) {
         return userService.loginUserByEmail(loginRequest.getEmail(), loginRequest.getPassword());
     }
-
-
 
 }
