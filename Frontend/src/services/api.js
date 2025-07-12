@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://3f96e1329c8d.ngrok-free.app/api/v1',
 });
 
 // Add token automatically to all requests
@@ -15,3 +15,4 @@ API.interceptors.request.use((config) => {
 
 // Auth API
 export const login = (data) => API.post('/auth/login', data);
+export const register = (data) => API.post('/users/register', data);
