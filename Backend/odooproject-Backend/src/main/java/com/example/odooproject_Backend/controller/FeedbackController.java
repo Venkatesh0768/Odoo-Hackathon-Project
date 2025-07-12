@@ -1,30 +1,29 @@
 package com.example.odooproject_Backend.controller;
 
-import com.example.odooproject_Backend.models.Feedback;
-import com.example.odooproject_Backend.models.User;
+import com.example.odooproject_Backend.dto.FeedbackDTO;
 import com.example.odooproject_Backend.services.FeedbackService;
-import com.example.odooproject_Backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/feedbacks")
 @RequiredArgsConstructor
+@CrossOrigin
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
     @PostMapping
-    public ResponseEntity<Feedback> leaveFeedback(@RequestBody Feedback feedback) {
-        return ResponseEntity.ok(feedbackService.leaveFeedback(feedback));
+    public ResponseEntity<FeedbackDTO> leaveFeedback(@RequestBody FeedbackDTO feedbackDTO) {
+        return ResponseEntity.ok(feedbackService.leaveFeedback(feedbackDTO));
     }
 
     @GetMapping("/swap/{swapRequestId}")
-    public ResponseEntity<Feedback> getFeedbackBySwapRequestId(@PathVariable Long swapRequestId) {
-        return feedbackService.getFeedbackBySwapRequestId(swapRequestId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<FeedbackDTO> getFeedbackBySwapRequestId(@PathVariable Long swapRequestId) {
+        Optional<FeedbackDTO> feedback = feedbackService.getFeedbackBySwapRequestId(swapRequestId);
+        return feedback.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }

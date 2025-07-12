@@ -1,5 +1,6 @@
 package com.example.odooproject_Backend.controller;
 
+import com.example.odooproject_Backend.dto.SkillDTO;
 import com.example.odooproject_Backend.models.Skill;
 import com.example.odooproject_Backend.services.SkillService;
 import org.springframework.http.ResponseEntity;
@@ -9,31 +10,33 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/skills")
+@CrossOrigin
 public class SkillController {
 
     private final SkillService skillService;
 
-    public SkillController(SkillService skillService){
+    public SkillController(SkillService skillService) {
         this.skillService = skillService;
     }
 
     @PostMapping
-    public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
-        return ResponseEntity.ok(skillService.addSkill(skill));
+    public ResponseEntity<SkillDTO> addSkill(@RequestBody Skill skill) {
+        Skill savedSkill = skillService.addSkill(skill);
+        return ResponseEntity.ok(skillService.convertToDTO(savedSkill));
     }
 
     @GetMapping
-    public ResponseEntity<List<Skill>> getAllSkills() {
+    public ResponseEntity<List<SkillDTO>> getAllSkills() {
         return ResponseEntity.ok(skillService.getAllSkills());
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Skill>> searchSkillsByName(@RequestParam String name) {
+    public ResponseEntity<List<SkillDTO>> searchSkillsByName(@RequestParam String name) {
         return ResponseEntity.ok(skillService.searchSkillsByName(name));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Skill>> getSkillsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<SkillDTO>> getSkillsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(skillService.getSkillsByUserId(userId));
     }
 
@@ -43,4 +46,3 @@ public class SkillController {
         return ResponseEntity.ok().build();
     }
 }
-

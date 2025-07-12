@@ -1,6 +1,6 @@
 package com.example.odooproject_Backend.controller;
 
-
+import com.example.odooproject_Backend.dto.SwapRequestDTO;
 import com.example.odooproject_Backend.models.SwapRequest;
 import com.example.odooproject_Backend.services.SwapRequestService;
 import org.springframework.http.ResponseEntity;
@@ -10,32 +10,35 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/swaps")
+@CrossOrigin
 public class SwapRequestController {
 
-    public SwapRequestService swapRequestService;
+    private final SwapRequestService swapRequestService;
 
-    public  SwapRequestController(SwapRequestService swapRequestService){
+    public SwapRequestController(SwapRequestService swapRequestService) {
         this.swapRequestService = swapRequestService;
     }
 
     @PostMapping
-    public ResponseEntity<SwapRequest> createSwapRequest(@RequestBody SwapRequest request) {
-        return ResponseEntity.ok(swapRequestService.createSwapRequest(request));
+    public ResponseEntity<SwapRequestDTO> createSwapRequest(@RequestBody SwapRequest request) {
+        SwapRequest created = swapRequestService.createSwapRequest(request);
+        return ResponseEntity.ok(swapRequestService.convertToDTO(created));
     }
 
     @GetMapping("/sender/{senderId}")
-    public ResponseEntity<List<SwapRequest>> getRequestsBySender(@PathVariable Long senderId) {
+    public ResponseEntity<List<SwapRequestDTO>> getRequestsBySender(@PathVariable Long senderId) {
         return ResponseEntity.ok(swapRequestService.getRequestsBySender(senderId));
     }
 
     @GetMapping("/receiver/{receiverId}")
-    public ResponseEntity<List<SwapRequest>> getRequestsByReceiver(@PathVariable Long receiverId) {
+    public ResponseEntity<List<SwapRequestDTO>> getRequestsByReceiver(@PathVariable Long receiverId) {
         return ResponseEntity.ok(swapRequestService.getRequestsByReceiver(receiverId));
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<SwapRequest> updateSwapStatus(@PathVariable Long id, @RequestParam String status) {
-        return ResponseEntity.ok(swapRequestService.updateSwapRequestStatus(id, status));
+    public ResponseEntity<SwapRequestDTO> updateSwapStatus(@PathVariable Long id, @RequestParam String status) {
+        SwapRequest updated = swapRequestService.updateSwapRequestStatus(id, status);
+        return ResponseEntity.ok(swapRequestService.convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
