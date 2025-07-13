@@ -36,7 +36,6 @@ The platform fosters a community of collaborative learning and sharing by allowi
 | Frontend    | React.js (Vite) |
 | Backend     | Spring Boot     |
 | Database    | MySQL           |
-| AI Services | Gemini API      |
 
 ---
 
