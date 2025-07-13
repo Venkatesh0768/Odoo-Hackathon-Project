@@ -55,9 +55,6 @@ The platform fosters a community of collaborative learning and sharing by allowi
 # 1. Install dependencies
 npm install
 
-# 2. Create .env.local with your Gemini API key
-echo "GEMINI_API_KEY=your_gemini_api_key" > .env.local
-
 # 3. Run the app
 npm run dev
 ```
